@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="login-box">
+      <h2>📊 Admin Dashboard</h2>
+
+      <h3>Edit Homework</h3>
+      <textarea id="hwInput" rows="4" style="width: 100%"></textarea><br />
+      <button onclick="updateHomework()">Save Homework</button>
+      <hr />
+    </div>
+
+    <script>
+      async function loadHomework() {
+        let res = await fetch("/homework.json");
+        let data = await res.json();
+        document.getElementById("hwInput").value = data.text;
+      }
+
+      async function updateHomework() {
+        let newText = document.getElementById("hwInput").value;
+        await fetch("/update-homework", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: newText }),
+        });
+        alert("Homework updated!");
+      }
+
+      loadHomework();
+    </script>
+  </body>
+</html>
